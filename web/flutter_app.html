@@ -1,0 +1,83 @@
+<html>
+<head>
+    <!--    <script type="text/javascript">-->
+    <!--    var serviceWorkerVersion = null;-->
+    <!--    var scriptLoaded = false;-->
+    <!--    function loadMainDartJs() {-->
+    <!--      if (scriptLoaded) {-->
+    <!--        return;-->
+    <!--      }-->
+    <!--      scriptLoaded = true;-->
+    <!--      var scriptTag = document.createElement('script');-->
+    <!--      scriptTag.src = 'main.dart.js';-->
+    <!--      scriptTag.type = 'application/javascript';-->
+    <!--      document.body.append(scriptTag);-->
+    <!--    }-->
+    <!-- loadMainDartJs();-->
+    <!--&lt;!&ndash;    if ('serviceWorker' in navigator) {&ndash;&gt;-->
+    <!--&lt;!&ndash;      // Service workers are supported. Use them.&ndash;&gt;-->
+    <!--&lt;!&ndash;      window.addEventListener('load', function () {&ndash;&gt;-->
+    <!--&lt;!&ndash;        // Wait for registration to finish before dropping the <script> tag.&ndash;&gt;-->
+    <!--&lt;!&ndash;        // Otherwise, the browser will load the script multiple times,&ndash;&gt;-->
+    <!--&lt;!&ndash;        // potentially different versions.&ndash;&gt;-->
+    <!--&lt;!&ndash;        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;&ndash;&gt;-->
+    <!--&lt;!&ndash;        navigator.serviceWorker.register(serviceWorkerUrl)&ndash;&gt;-->
+    <!--&lt;!&ndash;          .then((reg) => {&ndash;&gt;-->
+    <!--&lt;!&ndash;            function waitForActivation(serviceWorker) {&ndash;&gt;-->
+    <!--&lt;!&ndash;              serviceWorker.addEventListener('statechange', () => {&ndash;&gt;-->
+    <!--&lt;!&ndash;                if (serviceWorker.state == 'activated') {&ndash;&gt;-->
+    <!--&lt;!&ndash;                  console.log('Installed new service worker.');&ndash;&gt;-->
+    <!--&lt;!&ndash;                  loadMainDartJs();&ndash;&gt;-->
+    <!--&lt;!&ndash;                }&ndash;&gt;-->
+    <!--&lt;!&ndash;              });&ndash;&gt;-->
+    <!--&lt;!&ndash;            }&ndash;&gt;-->
+    <!--&lt;!&ndash;            if (!reg.active && (reg.installing || reg.waiting)) {&ndash;&gt;-->
+    <!--&lt;!&ndash;              // No active web worker and we have installed or are installing&ndash;&gt;-->
+    <!--&lt;!&ndash;              // one for the first time. Simply wait for it to activate.&ndash;&gt;-->
+    <!--&lt;!&ndash;              waitForActivation(reg.installing || reg.waiting);&ndash;&gt;-->
+    <!--&lt;!&ndash;            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {&ndash;&gt;-->
+    <!--&lt;!&ndash;              // When the app updates the serviceWorkerVersion changes, so we&ndash;&gt;-->
+    <!--&lt;!&ndash;              // need to ask the service worker to update.&ndash;&gt;-->
+    <!--&lt;!&ndash;              console.log('New service worker available.');&ndash;&gt;-->
+    <!--&lt;!&ndash;              reg.update();&ndash;&gt;-->
+    <!--&lt;!&ndash;              waitForActivation(reg.installing);&ndash;&gt;-->
+    <!--&lt;!&ndash;            } else {&ndash;&gt;-->
+    <!--&lt;!&ndash;              // Existing service worker is still good.&ndash;&gt;-->
+    <!--&lt;!&ndash;              console.log('Loading app from service worker.');&ndash;&gt;-->
+    <!--&lt;!&ndash;              loadMainDartJs();&ndash;&gt;-->
+    <!--&lt;!&ndash;            }&ndash;&gt;-->
+    <!--&lt;!&ndash;          });&ndash;&gt;-->
+
+    <!--&lt;!&ndash;        // If service worker doesn't succeed in a reasonable amount of time,&ndash;&gt;-->
+    <!--&lt;!&ndash;        // fallback to plaint <script> tag.&ndash;&gt;-->
+    <!--&lt;!&ndash;        setTimeout(() => {&ndash;&gt;-->
+    <!--&lt;!&ndash;          if (!scriptLoaded) {&ndash;&gt;-->
+    <!--&lt;!&ndash;            console.warn(&ndash;&gt;-->
+    <!--&lt;!&ndash;              'Failed to load app from service worker. Falling back to plain <script> tag.',&ndash;&gt;-->
+    <!--&lt;!&ndash;            );&ndash;&gt;-->
+    <!--&lt;!&ndash;            loadMainDartJs();&ndash;&gt;-->
+    <!--&lt;!&ndash;          }&ndash;&gt;-->
+    <!--&lt;!&ndash;        }, 4000);&ndash;&gt;-->
+    <!--&lt;!&ndash;      });&ndash;&gt;-->
+    <!--&lt;!&ndash;    } else {&ndash;&gt;-->
+    <!--&lt;!&ndash;      // Service workers not supported. Just drop the <script> tag.&ndash;&gt;-->
+    <!--&lt;!&ndash;      loadMainDartJs();&ndash;&gt;-->
+    <!--&lt;!&ndash;    }&ndash;&gt;-->
+
+
+    <!--</script>-->
+    <script type="application/javascript">
+        window.books=await chrome.bookmarks.getTree();
+console.log(books);
+
+
+
+
+    </script>
+</head>
+<body>
+
+
+</body>
+<script src="main.dart.js" type="application/javascript"></script>
+</html>

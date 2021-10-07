@@ -1,0 +1,19 @@
+{
+  "name": "chrom_ext",
+  "version": "1.0.0",
+  "description": "This is a flutter chrome extension",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": "icons/Icon-192.png"
+  },
+  "background": {
+    "service_worker": [
+      "background.js"
+    ]
+  },
+  "permissions": [
+    "downloads",
+    "bookmarks"
+  ],
+  "manifest_version": 3
+}
