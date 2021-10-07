@@ -14,32 +14,33 @@ import 'Api/ChromeBookmarks.dart';
 
 // JsObject get _bookmarks => chrome['bookmarks'];
 Future<void> main() async {
+  // example();
+
+  runApp(const MyApp());
+}
+
+void example() {
   log(loadTimes().commitLoadTime);
   // log(commitLoadTime());
-  Alert(chromebookmarks.MAX_WRITE_OPERATIONS_PER_HOUR);
+  // Alert(chromebookmarks.MAX_WRITE_OPERATIONS_PER_HOUR);
 
   try {
-    chromeDownloads.showDefaultFolder();
-    Alert(chromeDownloads.DangerType!["ACCEPTED"]);
-    var rec = await chromebookmarks.getRecent(2);
-    var tree = await chromebookmarks.getTree();
-    rec.forEach((element) {
-      Alert('==>R${element.title}');
-    });
-    tree.forEach((element) {
-      Alert('==>T${element.title}${element.dateAdded}');
-    });
-
-    // recent.forEach((element) {
-    //   Alert(element);
+    // chromeDownloads.showDefaultFolder();
+    // Alert(chromeDownloads.DangerType!["ACCEPTED"]);
+    // var rec = await chromebookmarks.getRecentP(2);
+    // var tree = await chromebookmarks.getTree();
+    // rec!.forEach((element) {
+    //   Alert('==>R${element.title}');
     // });
+    // tree.forEach((element) {
+    //   Alert('==>T${element.title}${element.dateAdded}');
+    // });
+
   } catch (e) {
     print(e);
     Alert(e.toString());
   }
   // await Seperate();
-
-  runApp(const MyApp());
 }
 
 Future<void> Seperate() async {
@@ -258,6 +259,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  var children = [];
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -271,12 +274,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    chromebookmarks.getRecentP(2).then((value) {
+      setState(() {
+        value.forEach((element) {
+          children.add(Text(element.title ?? "of"));
+        });
+      });
+    });
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -286,31 +297,65 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: DefaultTextStyle(
+          style: Theme.of(context).textTheme.headline2!,
+          textAlign: TextAlign.center,
+          child:
+              // Text("Hello"))
+              // FutureBuilder(
+              //     future: recentP,
+              //     builder: (context, snapshot) {
+              //       List<Widget> children = [];
+              //       if (snapshot.hasData) {
+              //         try {
+              //           (snapshot.data as List<Recent>).forEach((element) {
+              //             children.add(Text("element.title"));
+              //           });
+              //         } catch (e) {
+              //           print(e);
+              //           Alert(e.toString());
+              //           children.add(Text("element.title"));
+              //         }
+              //         ;
+              //       } else if (snapshot.hasError)
+              //         children.add(Text("error"));
+              //       else
+              //         children.add(CircularProgressIndicator());
+              //       return Center(
+              //           child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: children,
+              //       ));
+              //     }))
+              ListView(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug painting" (press "p" in the console, choose the
+            // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            // to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+
+            children: <Widget>[
+              Container(
+                height: 45,
+                child: ElevatedButton(
+                    onPressed: () {
+                      chromeDownloads.showDefaultFolder();
+                    },
+                    child: Text("ShowFolder")),
+              ),
+              ...children
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

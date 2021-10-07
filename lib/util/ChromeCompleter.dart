@@ -38,9 +38,9 @@ List? listify(JsObject obj, [Function? transformer = null]) {
     return l;
   }
 }
-
+var Json = context['JSON'];
 List stringfy(value) {
-  var Json = context['JSON'];
+
   return json.decode(Json.callMethod('stringify', [value]));
 }
 

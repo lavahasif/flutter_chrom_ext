@@ -1,3 +1,5 @@
+import 'package:chrom_ext/chrome.dart' as c;
+import 'package:chrom_ext/main.dart';
 import 'package:chrom_ext/model/Recent.dart';
 import 'package:chrom_ext/model/Tree.dart';
 import 'package:chrom_ext/util/ChromeCompleter.dart';
@@ -43,6 +45,31 @@ class ChromeBookmarks extends ChromeApi {
     return completer.future;
   }
 
+  Future<List<Recent>> getRecentP(int numberOfItems) async {
+    List<Recent> da = [];
+    try {
+      if (_bookmarks == null) _throwNotAvailable();
+      Converter<Recent> converter = new Converter<Recent>(Recent.fromJsons);
+
+      var callMethod = c.getRecent(numberOfItems);
+      // _bookmarks.callMethod('getRecent', [numberOfItems]);
+
+      // Alert("=======>1$callMethod");
+      var name = await promiseToFuture(callMethod);
+      // Alert("=======>2$name");
+      var getdata2 = getdata(name);
+
+      var replaceAll = getdata2.replaceAll('{"o":', "").replaceAll("]}", "]");
+
+      List decode = parse(replaceAll);
+      da = converter.getList(decode)!;
+    } catch (e) {
+      print(e);
+      // Alert(e.toString());
+    }
+    return da;
+  }
+
   Future<List<Tree>> getTree() {
     if (_bookmarks == null) _throwNotAvailable();
     Converter<Tree> converter = Converter<Tree>(Tree.fromJsons);
@@ -81,28 +108,31 @@ class ChromeBookmarks extends ChromeApi {
     return promiseToFuture(
         _bookmarks.callMethod('getRecent', [numberOfItems, callback]));
   }
+
+  List parse(String value) {
+    var ob = Json.callMethod('parse', [value]);
+    return stringfy(ob);
+  }
 }
 
 void _throwNotAvailable() {
   throw new UnsupportedError("'chrome.browsingData' is not available");
 }
 
-BookmarkTreeNodeUnmodifiable _createBookmarkTreeNodeUnmodifiable(
-        String value) =>
+BookmarkTreeNodeUnmodifiable _createBookmarkTreeNodeUnmodifiable(String value) =>
     BookmarkTreeNodeUnmodifiable.VALUES
         .singleWhere((ChromeEnum e) => e.value == value);
 
 class BookmarkTreeNode extends ChromeObject {
-  BookmarkTreeNode(
-      {String? id,
-      String? parentId,
-      int? index,
-      String? url,
-      String? title,
-      var dateAdded,
-      var dateGroupModified,
-      BookmarkTreeNodeUnmodifiable? unmodifiable,
-      List<BookmarkTreeNode>? children}) {
+  BookmarkTreeNode({String? id,
+    String? parentId,
+    int? index,
+    String? url,
+    String? title,
+    var dateAdded,
+    var dateGroupModified,
+    BookmarkTreeNodeUnmodifiable? unmodifiable,
+    List<BookmarkTreeNode>? children}) {
     if (id != null) this.id = id;
     if (parentId != null) this.parentId = parentId;
     if (index != null) this.index = index;
@@ -186,7 +216,7 @@ class BookmarkTreeNode extends ChromeObject {
    */
   List<BookmarkTreeNode> get children =>
       listify(jsProxy['children'], _createBookmarkTreeNode)
-          as List<BookmarkTreeNode>;
+      as List<BookmarkTreeNode>;
 
   set children(List<BookmarkTreeNode> value) =>
       jsProxy['children'] = jsify(value);
@@ -194,7 +224,7 @@ class BookmarkTreeNode extends ChromeObject {
 
 class BookmarkTreeNodeUnmodifiable extends ChromeEnum {
   static const BookmarkTreeNodeUnmodifiable MANAGED =
-      const BookmarkTreeNodeUnmodifiable._('managed');
+  const BookmarkTreeNodeUnmodifiable._('managed');
 
   static const List<BookmarkTreeNodeUnmodifiable> VALUES = const [MANAGED];
 
