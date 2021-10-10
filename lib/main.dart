@@ -256,31 +256,29 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+var textStyle = TextStyle(fontSize: 12);
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   var children = [];
 
   void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+    children.clear();
+    chromebookmarks.getRecentP(1000).then((value) {
+      setState(() {
+        value.forEach((element) {
+          children.add(Text(
+            element.title ?? "of",
+            style: textStyle,
+          ));
+        });
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    chromebookmarks.getRecentP(2).then((value) {
-      setState(() {
-        value.forEach((element) {
-          children.add(Text(element.title ?? "of"));
-        });
-      });
-    });
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -302,32 +300,7 @@ class _MyHomePageState extends State<MyHomePage> {
           textAlign: TextAlign.center,
           child:
               // Text("Hello"))
-              // FutureBuilder(
-              //     future: recentP,
-              //     builder: (context, snapshot) {
-              //       List<Widget> children = [];
-              //       if (snapshot.hasData) {
-              //         try {
-              //           (snapshot.data as List<Recent>).forEach((element) {
-              //             children.add(Text("element.title"));
-              //           });
-              //         } catch (e) {
-              //           print(e);
-              //           Alert(e.toString());
-              //           children.add(Text("element.title"));
-              //         }
-              //         ;
-              //       } else if (snapshot.hasError)
-              //         children.add(Text("error"));
-              //       else
-              //         children.add(CircularProgressIndicator());
-              //       return Center(
-              //           child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: children,
-              //       ));
-              //     }))
+
               ListView(
             // Column is also a layout widget. It takes a list of children and
             // arranges them vertically. By default, it sizes itself to fit its
@@ -353,7 +326,33 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     child: Text("ShowFolder")),
               ),
-              ...children
+              ...children,
+              FutureBuilder<List<d.Recent>>(
+                  future: chromebookmarks.getRecentP(1000),
+                  builder: (context, snapshot) {
+                    List<Widget> children = [];
+                    if (snapshot.hasData) {
+                      try {
+                        snapshot.data!.forEach((element) {
+                          children.add(Text(element.title ?? ""));
+                        });
+                      } catch (e) {
+                        print(e);
+                        Alert(e.toString());
+                        children.add(Text("element.title"));
+                      }
+                      ;
+                    } else if (snapshot.hasError)
+                      children.add(Text("error"));
+                    else
+                      children.add(CircularProgressIndicator());
+                    return Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: children,
+                    ));
+                  })
             ],
           ),
         ),
@@ -364,5 +363,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<List<d.Recent>> getData() async {
+    var recentP = await chromebookmarks.getRecentP(100);
+    List<d.Recent> data = [];
+    recentP.forEach((element) {
+      data.add(element);
+    });
+    return data;
   }
 }

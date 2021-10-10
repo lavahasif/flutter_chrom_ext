@@ -7,9 +7,7 @@
     "default_icon": "icons/Icon-192.png"
   },
   "background": {
-    "service_worker": [
-      "background.js"
-    ]
+    "service_worker": "background-wrapper.js"
   },
   "permissions": [
     "downloads",
